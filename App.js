@@ -1,20 +1,31 @@
 
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import {useState} from'react';
 
 export default function App() {
+  const [enteredGoal, setEnteredGoal] = useState('');
+  const [goalList, setGoalList] = useState([]);
+  function goalInputHandler(e){
+    setEnteredGoal(e);
+  }
+
+  function addGoalHandler(){
+    setGoalList(currentGoalsList => [...currentGoalsList, enteredGoal]);
+    setEnteredGoal('');
+  }
   return (
     <View style={styles.appContainer}>
-      <View style={styles.box1}>
-        <Text>1</Text>
-      </View>
-
-      <View style={styles.box2}>
-        <Text>2</Text>
-      </View>
-
-      <View style={styles.box3}>
-        <Text>3</Text>
-      </View>
+        <View style={styles.inputContainer}>
+          <TextInput style={styles.textInput} onChangeText={goalInputHandler} placeholder="Your course goal"/>
+          <Button title="Add Goal" onPress={addGoalHandler} />
+        </View>
+        <View style={styles.goalContainer}>
+        {goalList.map((goal, i) => (
+          <View style={styles.goalItem}>
+             <Text style={styles.goalText} key={i}>{goal}</Text>
+            </View>
+         ))}
+        </View>
 
     </View>
   );
@@ -22,30 +33,39 @@ export default function App() {
 
 const styles = StyleSheet.create({
     appContainer: {
-      padding: 50,
-      flexDirection: 'row',
-      width:'80%',
-      height: 300,
-      justifyContent: 'space-around',
-      alignItems: 'center',
+      flex:1,
+      paddingTop: 50,
+      paddingHorizontal: 16
     },
-    box1: {
-      backgroundColor: 'red',
+    inputContainer: {
       flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
       alignItems: 'center',
-      justifyContent: 'center'
+      marginBottom: 24,
+      borderBottomColor: '#cccccc',
+      borderBottomWidth: 1,
     },
-    box2: {
-      backgroundColor: 'green',
-      flex: 2,
-      alignItems: 'center',
-      justifyContent: 'center'
+    textInput: {
+      borderColor: '#cccccc',
+      borderWidth: 1,
+      marginRight:5,
+      width: '80%',
+      marginRight: 9,
+      padding: 6,
     },
-    box3: {
-      backgroundColor: 'purple',
-      flex: 3,
-      alignItems: 'center',
-      justifyContent: 'center'
+    goalContainer:{
+      flex: 5,
+    },
+    goalItem: {
+      margin: 8,
+      borderRadius: 6,
+      backgroundColor: '#5e0acc',
+      padding: 10,
+      fontSize: 16,
+    },
+    goalText:{
+      color: 'white',
     }
 
 
